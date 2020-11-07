@@ -1,2 +1,3 @@
-# Lyrical
-Small Discord.Js Script meant to send text from a file and send it as a "user" (a disguised webhook).
+<h1 align='center'> Lyrical </h1>
+<p align='center'> Small Discord.Js Script meant to send text from a file and send it as a "user" (a disguised webhook). </p>
+<img align='center' src='https://raw.githubusercontent.com/fweak-2/Lyrical/main/Github-Lyrical.PNG'>

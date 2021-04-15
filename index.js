@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const GeniusFetcher = require('genius-lyrics-fetcher');
 
-const ACCESS_TOKEN = '7PPBgn5n4hkgph58yQQNa-3GNgTLI3mzIV8x6IRIME4wFOn-flZ97zt6VroVIjdd';
+const ACCESS_TOKEN = '7PPBgn5n4hkgph58yQQNa-3GNgTLI3mzIV8x6IRIME4wFOn-flZ97zt6VroVIjdd'; // haha whatever
 const gfetch = new GeniusFetcher.Client(ACCESS_TOKEN);
 
 const client = new Discord.Client();

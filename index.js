@@ -6,7 +6,6 @@ const ACCESS_TOKEN = '7PPBgn5n4hkgph58yQQNa-3GNgTLI3mzIV8x6IRIME4wFOn-flZ97zt6Vr
 const gfetch = new GeniusFetcher.Client(ACCESS_TOKEN);
 
 const client = new Discord.Client();
-const lyrics = fs.readFileSync('lyrics.txt', 'utf-8').replace(/\r/g, '').split('\n');
 const config = require ('./config.json');
 
 client.on('ready', () => {
@@ -49,6 +48,7 @@ client.on('message', async(message) => {
     }
 
     if (message.content === 'lyrical') {
+        let lyrics = fs.readFileSync('lyrics.txt', 'utf-8').replace(/\r/g, '').split('\n');
         await message.delete();
         const webhook = await message.channel.createWebhook('LyricMc', { reason: 'trolll' });
         const memberCollection = await message.guild.members.fetch();

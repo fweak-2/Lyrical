@@ -7,6 +7,7 @@ const gfetch = new GeniusFetcher.Client(ACCESS_TOKEN);
 
 const client = new Discord.Client();
 const config = require ('./config.json');
+const TOKEN = process.env['TOKEN']
 
 client.on('ready', () => {
     console.log(`Started Lyrical -> ${client.user.tag}`);
@@ -26,9 +27,12 @@ client.on('message', async(message) => {
             });
         }
         let discordLyrics = message.content.replace('getlyrics ', '');
-        if (message.content.includes('/') === false) {
-            message.channel.send('Correct format: `getlyrics ' + discordLyrics + ' / Artist Name`');
+        if (message.content.replace('getlyrics', '') === '') {
+          message.channel.send('Correct format: `getlyrics Song Name / Artist Name`');
             return;
+        } else if (message.content.includes('/') === false) {
+          message.channel.send('Correct format: `getlyrics ' + discordLyrics + ' / Artist Name`');
+          return;
         }
         discordLyrics = discordLyrics.split('/');
         gfetch.fetch(discordLyrics[0], discordLyrics[1])
@@ -64,4 +68,4 @@ client.on('message', async(message) => {
     }
 });
 
-client.login(config.token);
+client.login(TOKEN);

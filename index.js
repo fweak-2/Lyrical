@@ -15,14 +15,20 @@ client.on('ready', () => {
 
 client.on('message', async(message) => {
     if (message.author.bot) return;
-    if (message.author.id !== config.yourId) return console.log('Author Check');
+    if (config.yourId.includes(message.author.id) === false) return console.log('Author Check');
 
-    if (message.content === 'hey') return message.reply('\n> Hello');
+    if (message.content.toLowerCase() === 'hey') return message.reply('\n> Hello');
 
     if (message.content.startsWith('getlyrics')) {
+        let oldLyrics;
+        fs.readFile('lyrics.txt', 'utf8', function (err,data) {
+            if (err) return message.channel.send(err.toString());
+            oldLyrics = data;
+        });
         function writeToFile(newLyrics) {
             fs.writeFile('lyrics.txt', newLyrics.toString(), function (err) {
-                if (err) return console.log(err);
+                if (err) return message.channel.send(err.toString());
+                if (fs.readFileSync('lyrics.txt', 'utf-8') != oldLyrics) return message.channel.send(`Lyrics set to \`${discordLyrics}\`.`);
                 console.log('lyrics saved');
             });
         }
@@ -35,23 +41,32 @@ client.on('message', async(message) => {
           return;
         }
         discordLyrics = discordLyrics.split('/');
+
         gfetch.fetch(discordLyrics[0], discordLyrics[1])
             .then(result => writeToFile(result.lyrics));
+        await message.delete();
     }
 
-    if (message.content.startsWith('sendlyrics')) {
+    if (message.content.toLowerCase().startsWith('sendlyrics')) {
         fs.readFile('lyrics.txt', 'utf8', function (err,data) {
-            if (err) {
-                return console.log(err);
-            }
+            if (err) data = err.toString();
             if (data.length > 2000) {
-                return message.channel.send('I cannot send the lyrics as it\'s more than 2000 characters!');
+              data = 'I cannot send the lyrics as it\'s more than 2000 characters! You can view the lyrics in the attachment.';
+              message.channel.send({
+                files: ['lyrics.txt']
+              });
             }
-            return message.channel.send(data);
+            const lyricEmbed = new Discord.MessageEmbed()
+            .setColor('#A228FF')
+            .setTitle('Current Stored Lyrics')
+            .setDescription(data)
+            .setThumbnail('https://cdn.discordapp.com/attachments/788198099067076638/832490860486066206/lyrical.gif')
+            .setTimestamp()
+            return message.channel.send(lyricEmbed);
         });
     }
 
-    if (message.content === 'lyrical') {
+    if (message.content.toLowerCase() === 'lyrical') {
         let lyrics = fs.readFileSync('lyrics.txt', 'utf-8').replace(/\r/g, '').split('\n');
         await message.delete();
         const webhook = await message.channel.createWebhook('LyricMc', { reason: 'trolll' });

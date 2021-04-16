@@ -7,7 +7,6 @@ const gfetch = new GeniusFetcher.Client(ACCESS_TOKEN);
 
 const client = new Discord.Client();
 const config = require ('./config.json');
-const TOKEN = process.env['TOKEN']
 
 client.on('ready', () => {
     console.log(`Started Lyrical -> ${client.user.tag}`);
@@ -83,4 +82,4 @@ client.on('message', async(message) => {
     }
 });
 
-client.login(TOKEN);
+client.login(config.token);
